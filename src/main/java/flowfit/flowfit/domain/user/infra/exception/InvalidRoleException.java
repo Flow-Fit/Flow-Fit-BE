@@ -1,4 +1,4 @@
-package flowfit.flowfit.domain.user.domain.exception;
+package flowfit.flowfit.domain.user.infra.exception;
 
 import blaybus.global.infra.exception.auth.BlaybusAuthException;
 import org.springframework.http.HttpStatus;

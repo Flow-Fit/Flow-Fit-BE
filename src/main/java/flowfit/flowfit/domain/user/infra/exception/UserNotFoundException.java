@@ -1,4 +1,4 @@
-package flowfit.flowfit.domain.user.domain.exception;
+package flowfit.flowfit.domain.user.infra.exception;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String userId) {

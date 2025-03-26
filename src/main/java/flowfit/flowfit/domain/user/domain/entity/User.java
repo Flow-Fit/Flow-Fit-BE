@@ -1,52 +1,74 @@
 package flowfit.flowfit.domain.user.domain.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import flowfit.flowfit.domain.user.domain.entity.member.Member;
+import flowfit.flowfit.domain.user.domain.entity.trainer.Trainer;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "user")
 @DynamicUpdate
 public class User {
     @Id
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String id;
 
-    @Column(name = "mail", nullable = false)
-    private String mail;
+    @Column(nullable = false)
+    private String email;
 
-    @Column(name = "name", nullable = false)
+    //아이디
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    // 이름
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "profile", nullable = false)
-    private String profile;
+    @Column(nullable = false)
+    private String profileImage;
+
+    @Column(nullable = false)
+    private String phoneNumber;
+
+    @CreationTimestamp
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
 
+    // 🔽 Member와 1:1 관계 (양방향)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Member member;
+
+    // 🔽 Trainer와 1:1 관계 (양방향)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Trainer trainer;
 
     @Builder
-    public User(String id, String mail, String name, String profile, Role role) {
+    public User(String id, String email, String username, String password, String name,
+                String profileImage, String phoneNumber, Role role) {
         this.id = id;
-        this.mail = mail;
+        this.email = email;
+        this.username = username;
+        this.password = password;
         this.name = name;
-        this.profile = profile;
+        this.profileImage = profileImage;
+        this.phoneNumber = phoneNumber;
         this.role = role;
     }
 
-    public void updateNameAndEmailAndProfile(String name, String email, String profile) {
-        this.name = name;
-        this.mail = email;
-        this.profile = profile;
-    }
 }

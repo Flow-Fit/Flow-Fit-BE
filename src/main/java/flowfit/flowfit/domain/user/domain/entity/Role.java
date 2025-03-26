@@ -1,25 +1,31 @@
 package flowfit.flowfit.domain.user.domain.entity;
 
-import flowfit.domain.user.domain.exception.InvalidRoleException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor
 public enum Role {
-    ANONYMOUS("ROLE_ANONYMOUS"),
-    USER("ROLE_USER"),
-    DESIGNER("ROLE_DESIGNER"),
+    MEMBER("ROLE_MEMBER"),
+    TRAINER("ROLE_TRAINER"),
     ADMIN("ROLE_ADMIN");
+    private final String key;
 
-    private final String value;
+    Role(String key) {
+        this.key = key;
+    }
 
-    public static Role getByValue(String value) {
-        for (Role role : Role.values()) {
-            if (role.value.equals(value)) {
-                return role;
-            }
-        }
-        throw new InvalidRoleException(value + "라는 역할이 존재하지 않습니다.");
+    public String getKey() {
+        return key;
+    }
+
+    // Enum 매핑용 메서드
+    public static Role from(String key) {
+        return Arrays.stream(Role.values())
+                .filter(r -> r.getKey().equalsIgnoreCase(key)) // 대소문자 구분 안함
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("등급이 없네요.: " + key));
     }
 }
