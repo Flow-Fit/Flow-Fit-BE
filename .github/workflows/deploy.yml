@@ -19,7 +19,12 @@ jobs:
         run: |
           mkdir -p env
           echo "${{ secrets.ENV_VARS }}" > env/prod.env
-
+      # ✅ (2-1) ENV 파일 불러와서 환경변수로 등록
+      - name: Load env file into environment
+        run: |
+          set -a
+          source env/prod.env
+          set +a
       # (3) JDK 17 세팅
       - name: Set up JDK 17
         uses: actions/setup-java@v2
