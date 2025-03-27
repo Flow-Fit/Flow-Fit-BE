@@ -1,4 +1,4 @@
-name: blaybus CI/CD
+name: flowfit CI/CD
 
 on:
   push:
