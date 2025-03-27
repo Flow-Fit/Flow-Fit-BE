@@ -1,6 +1,6 @@
 spring:
   application:
-    name: blaybus-dev
+    name: flowfit-dev
 
   aot:
     enabled: false  # AOT 비활성화 설정 추가
