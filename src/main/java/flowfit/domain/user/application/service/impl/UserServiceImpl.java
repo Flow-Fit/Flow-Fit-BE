@@ -1,11 +1,78 @@
 package flowfit.domain.user.application.service.impl;
 
 
+import flowfit.domain.oauth2.application.service.CreateAccessTokenAndRefreshTokenService;
+
 import flowfit.domain.user.application.service.UserService;
+import flowfit.domain.user.domain.entity.User;
+import flowfit.domain.user.domain.repository.UserRepository;
+import flowfit.domain.user.infra.exception.EmailExistException;
+import flowfit.domain.user.infra.exception.UserNameExistException;
+import flowfit.domain.user.presentation.dto.req.UserJoinDto;
+import flowfit.domain.user.presentation.dto.req.UserLoginDto;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Sinks;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private final CreateAccessTokenAndRefreshTokenService createAccessTokenAndRefreshTokenService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public void userJoin(UserJoinDto joinDto, HttpServletResponse response) throws IOException {
+        User userN = userRepository.findByUsername(joinDto.username()).orElse(null);
+        User userE = userRepository.findByEmail(joinDto.email()).orElse(null);
+        User user;
+        if (userN != null) {
+            throw new UserNameExistException();
+        } else if (userE != null) {
+            throw new EmailExistException();
+        } else {
+            String userId = UUID.randomUUID().toString();
+            user = User.builder()
+                    .id(userId)
+                    .email(joinDto.email())
+                    .username(joinDto.username())
+                    .password(passwordEncoder.encode(joinDto.password()))
+                    .name(joinDto.name())
+                    .profile(joinDto.profile())
+                    .phoneNumber(joinDto.phoneNumber())
+                    .role(joinDto.role())
+                    .build();
+
+            userRepository.save(user);
+        }
+
+
+       createToken(response, user);
     }
+
+    @Override
+    public void userLoin(UserLoginDto joinDto, HttpServletResponse response) {
+
+    }
+
+    public void createToken(HttpServletResponse response, User user) throws IOException {
+
+        Map<String, String> tokens = createAccessTokenAndRefreshTokenService.createAccessTokenAndRefreshToken(user.getId(), user.getRole(), user.getEmail());
+
+        response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokens.get("access_token"));
+        response.addHeader(HttpHeaders.SET_COOKIE, tokens.get("refresh_token_cookie"));
+
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+
+        response.getWriter().write("Successfully Login");
+    }
+
+}

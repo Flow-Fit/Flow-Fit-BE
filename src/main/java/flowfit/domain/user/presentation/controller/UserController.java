@@ -2,11 +2,12 @@ package flowfit.domain.user.presentation.controller;
 
 import flowfit.domain.user.application.service.UserService;
 import flowfit.domain.user.domain.entity.User;
+import flowfit.domain.user.presentation.dto.req.UserJoinDto;
+import flowfit.domain.user.presentation.dto.req.UserLoginDto;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,5 +18,15 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
 
+    @PostMapping("/join")
+    public void UserJoin(UserJoinDto joinDto, HttpServletResponse response){
+        userService.userJoin(joinDto, response);
+
+    }
+
+    @PostMapping("/login")
+    public void UserJoin(UserLoginDto loginDto){
+        userService.userLoin(loginDto);
+    }
 
 }
