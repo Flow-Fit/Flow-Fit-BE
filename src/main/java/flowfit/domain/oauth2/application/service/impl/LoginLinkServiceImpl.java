@@ -4,7 +4,7 @@ import flowfit.domain.oauth2.application.service.LoginLinkService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-//@Service
+@Service
 public class LoginLinkServiceImpl implements LoginLinkService {
 
     @Value("${oauth2.base-url}")

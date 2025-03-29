@@ -12,7 +12,8 @@ public record ErrorResponse (
         return new ErrorResponse(
                 exception.getStatus().value(),
                 exception.getMessage(),
-                exception.getCause().getMessage(),
+                exception.getCause() != null ? exception.getCause().getMessage() : null,
+
                 LocalDateTime.now()
         );
     }

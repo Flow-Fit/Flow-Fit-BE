@@ -10,6 +10,6 @@ import java.io.IOException;
 public interface UserService {
 
     void userJoin(UserJoinDto joinDto, HttpServletResponse response) throws IOException;
-    void userLoin(UserLoginDto joinDto,HttpServletResponse response);
+    void userLoin(UserLoginDto joinDto,HttpServletResponse response) throws IOException;
 
 }

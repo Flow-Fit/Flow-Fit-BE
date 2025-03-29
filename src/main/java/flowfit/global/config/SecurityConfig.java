@@ -38,7 +38,7 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     private final JsonWebTokenRepository jsonWebTokenRepository;
     private final GoogleJsonWebTokenRepository googleJsonWebTokenRepository;
-    private final List<String> excludedUrls = Arrays.asList("/api/reissue", "/api/oauth2/login", "/api/healthcheck", "/api/oauth2/callback");
+    private final List<String> excludedUrls = Arrays.asList("/api/reissue", "/api/oauth2/login", "/api/join/login", "/api/users/login", "/api/healthcheck", "/api/oauth2/callback");
 
 
     @Bean
@@ -67,6 +67,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/healthcheck").permitAll()
                         .requestMatchers("/api/oauth2/login").permitAll()
                         .requestMatchers("/api/oauth2/callback").permitAll()
+                        .requestMatchers("/api/users/join").permitAll()
+                        .requestMatchers("/api/users/login").permitAll()
                         .requestMatchers("/api/reissue").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session

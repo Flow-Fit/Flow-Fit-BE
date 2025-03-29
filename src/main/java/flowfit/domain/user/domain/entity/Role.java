@@ -1,5 +1,6 @@
 package flowfit.domain.user.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import flowfit.domain.user.infra.exception.InvalidRoleException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public enum Role {
     }
 
     // Enum 매핑용 메서드
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static Role from(String key) {
         return Arrays.stream(Role.values())
                 .filter(r -> r.getKey().equalsIgnoreCase(key)) // 대소문자 구분 안함

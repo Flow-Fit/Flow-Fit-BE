@@ -12,13 +12,14 @@ import flowfit.domain.user.domain.repository.MemberRepository;
 import flowfit.domain.user.domain.repository.TrainerMemberRepository;
 import flowfit.domain.user.domain.repository.TrainerRepository;
 import flowfit.domain.user.domain.repository.UserRepository;
-import flowfit.domain.user.infra.exception.EmailExistException;
-import flowfit.domain.user.infra.exception.UserNameExistException;
+import flowfit.domain.user.infra.exception.*;
 import flowfit.domain.user.presentation.dto.req.UserJoinDto;
 import flowfit.domain.user.presentation.dto.req.UserLoginDto;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Sinks;
@@ -28,6 +29,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final CreateAccessTokenAndRefreshTokenService createAccessTokenAndRefreshTokenService;
@@ -59,22 +61,34 @@ public class UserServiceImpl implements UserService {
                     .build();
 
             userRepository.save(user);
-            if(user.getRole().equals(Role.MEMBER)){
-                Member member= Member.builder().user(user).build();
+            if (user.getRole().equals(Role.MEMBER)) {
+                Member member = Member.builder().user(user).build();
                 memberRepository.save(member);
-            }else if(user.getRole().equals(Role.TRAINER)){
+            } else if (user.getRole().equals(Role.TRAINER)) {
                 Trainer trainer = Trainer.builder().user(user).build();
                 trainerRepository.save(trainer);
             }
         }
 
 
-       createToken(response, user);
+        createToken(response, user);
     }
 
     @Override
-    public void userLoin(UserLoginDto joinDto, HttpServletResponse response) {
+    public void userLoin(UserLoginDto loginDto, HttpServletResponse response) throws IOException {
+        User existUser = userRepository.findByUsername(loginDto.username()).orElse(null);
 
+        if (existUser == null) {
+
+            throw new UserNameNotException();
+
+        }
+
+        if (!BCrypt.checkpw(loginDto.password(), existUser.getPassword())) {
+            throw new PasswordNotCorrectException();
+        }
+
+        createToken(response, existUser);
     }
 
     public void createToken(HttpServletResponse response, User user) throws IOException {

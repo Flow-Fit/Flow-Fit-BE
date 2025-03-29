@@ -3,6 +3,8 @@ package flowfit.domain.user.infra.exception;
 import flowfit.global.infra.exception.FlowfitException;
 import flowfit.global.infra.exception.auth.FlowfitAuthException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 
 public class UserNameExistException extends FlowfitException {
 

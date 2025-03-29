@@ -20,13 +20,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/join")
-    public void UserJoin(UserJoinDto joinDto, HttpServletResponse response) throws IOException {
+    public void UserJoin(@RequestBody UserJoinDto joinDto, HttpServletResponse response) throws IOException {
         userService.userJoin(joinDto, response);
     }
 
     @PostMapping("/login")
-    public void UserJoin(UserLoginDto loginDto){
-        userService.userLoin(loginDto);
+    public void UserJoin(@RequestBody UserLoginDto loginDto, HttpServletResponse response) throws IOException {
+        userService.userLoin(loginDto,response);
     }
 
 }
