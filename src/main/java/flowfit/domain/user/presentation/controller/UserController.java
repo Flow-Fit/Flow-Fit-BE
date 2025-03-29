@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,9 +20,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/join")
-    public void UserJoin(UserJoinDto joinDto, HttpServletResponse response){
+    public void UserJoin(UserJoinDto joinDto, HttpServletResponse response) throws IOException {
         userService.userJoin(joinDto, response);
-
     }
 
     @PostMapping("/login")

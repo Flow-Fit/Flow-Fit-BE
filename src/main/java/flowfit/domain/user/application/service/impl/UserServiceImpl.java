@@ -4,7 +4,13 @@ package flowfit.domain.user.application.service.impl;
 import flowfit.domain.oauth2.application.service.CreateAccessTokenAndRefreshTokenService;
 
 import flowfit.domain.user.application.service.UserService;
+import flowfit.domain.user.domain.entity.Role;
 import flowfit.domain.user.domain.entity.User;
+import flowfit.domain.user.domain.entity.member.Member;
+import flowfit.domain.user.domain.entity.trainer.Trainer;
+import flowfit.domain.user.domain.repository.MemberRepository;
+import flowfit.domain.user.domain.repository.TrainerMemberRepository;
+import flowfit.domain.user.domain.repository.TrainerRepository;
 import flowfit.domain.user.domain.repository.UserRepository;
 import flowfit.domain.user.infra.exception.EmailExistException;
 import flowfit.domain.user.infra.exception.UserNameExistException;
@@ -26,6 +32,8 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final CreateAccessTokenAndRefreshTokenService createAccessTokenAndRefreshTokenService;
     private final UserRepository userRepository;
+    private final TrainerRepository trainerRepository;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -51,6 +59,13 @@ public class UserServiceImpl implements UserService {
                     .build();
 
             userRepository.save(user);
+            if(user.getRole().equals(Role.MEMBER)){
+                Member member= Member.builder().user(user).build();
+                memberRepository.save(member);
+            }else if(user.getRole().equals(Role.TRAINER)){
+                Trainer trainer = Trainer.builder().user(user).build();
+                trainerRepository.save(trainer);
+            }
         }
 
 

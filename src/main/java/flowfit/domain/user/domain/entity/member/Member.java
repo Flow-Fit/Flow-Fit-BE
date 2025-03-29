@@ -3,6 +3,7 @@ import flowfit.domain.schedule.domain.entity.Schedule;
 import flowfit.domain.user.domain.entity.User;
 import flowfit.domain.user.domain.entity.trainermember.TrainerMember;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
@@ -30,4 +31,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Schedule> schedules = new ArrayList<>();
+
+    @Builder
+    public Member(User user){
+        this.user=user;
+    }
 }
