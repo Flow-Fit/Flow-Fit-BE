@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Slf4j
 public class FlowfitJWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
@@ -43,6 +45,7 @@ public class FlowfitJWTFilter extends OncePerRequestFilter {
         }
 
         String accessToken = jwtUtil.getAccessTokenFromHeaders(request);
+        log.info(accessToken);
 
         if(accessToken == null || accessToken.equals("undefined") || accessToken.equals("null")) {
             filterChain.doFilter(request, response);
@@ -54,15 +57,19 @@ public class FlowfitJWTFilter extends OncePerRequestFilter {
         }
 
         String userId = jwtUtil.getId(accessToken);
+        log.info(userId);
         Role role = jwtUtil.getRole(accessToken);
 
+
         GrantedAuthority authority = new SimpleGrantedAuthority(role.getKey());
+        log.info(role.getKey());
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userId, null, Collections.singleton(authority));
-
+        log.info(role.name());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        log.info("인증 설정 완료: {}", SecurityContextHolder.getContext().getAuthentication());
         filterChain.doFilter(request, response);
+        log.info("2");
     }
 
     @Override

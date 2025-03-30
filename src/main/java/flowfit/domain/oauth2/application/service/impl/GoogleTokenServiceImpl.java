@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-//@Service
+@Service
 @Transactional
 @RequiredArgsConstructor
 @Slf4j

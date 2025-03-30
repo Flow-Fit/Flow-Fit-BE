@@ -18,6 +18,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(FlowfitException.class)
     public ResponseEntity<ErrorResponse> handleFlowfitException(FlowfitException e) {
+        log.error("FlowfitException caught: {}", e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(ErrorResponse.of(e));
     }
 
