@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import flowfit.domain.oauth2.infra.filter.FlowfitJWTFilter;
 import flowfit.domain.oauth2.infra.filter.FlowfitLogoutFilter;
 import flowfit.global.infra.exception.auth.FlowfitAuthExceptionFilter;
-import flowfit.global.jwt.domain.repository.GoogleJsonWebTokenRepository;
+import flowfit.global.jwt.domain.repository.KakaoJsonWebTokenRepository;
 import flowfit.global.jwt.domain.repository.JsonWebTokenRepository;
 import flowfit.global.jwt.util.JWTUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,8 +37,8 @@ public class SecurityConfig {
     private final JWTUtil jwtUtil;
     private final ObjectMapper objectMapper;
     private final JsonWebTokenRepository jsonWebTokenRepository;
-    private final GoogleJsonWebTokenRepository googleJsonWebTokenRepository;
-    private final List<String> excludedUrls = Arrays.asList("/api/reissue", "/api/oauth2/login", "/api/join/login", "/api/users/login", "/api/healthcheck", "/api/oauth2/callback");
+    private final KakaoJsonWebTokenRepository KakaoJsonWebTokenRepository;
+    private final List<String> excludedUrls = Arrays.asList("/api/reissue", "/api/oauth2/login", "/api/users/join", "/api/users/login", "/api/healthcheck", "/api/oauth2/callback");
 
 
     @Bean
@@ -54,7 +54,7 @@ public class SecurityConfig {
                 // CORS 설정 파일로 빼기
                 .cors((cors) -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOriginPatterns(List.of("https://flowfit.netlify.app/", "http://localhost:5173"));
+                    config.setAllowedOriginPatterns(List.of("*"));
                     config.setAllowedMethods(Collections.singletonList("*"));
                     config.setAllowCredentials(true);
                     config.setAllowedHeaders(Collections.singletonList("*"));
@@ -79,7 +79,7 @@ public class SecurityConfig {
                         ))
                 .addFilterAfter(new FlowfitAuthExceptionFilter(objectMapper), CorsFilter.class)
                 .addFilterAfter(new FlowfitJWTFilter(jwtUtil, excludedUrls), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAt(new FlowfitLogoutFilter(jwtUtil, jsonWebTokenRepository, googleJsonWebTokenRepository), LogoutFilter.class);
+                .addFilterAt(new FlowfitLogoutFilter(jwtUtil, jsonWebTokenRepository, KakaoJsonWebTokenRepository), LogoutFilter.class);
 
         return http.build();
     }

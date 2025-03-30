@@ -7,8 +7,8 @@ import flowfit.domain.oauth2.presentation.dto.response.OAuth2UserResponse;
 import flowfit.domain.user.domain.entity.Role;
 
 
-import flowfit.global.jwt.domain.entity.GoogleJsonWebToken;
-import flowfit.global.jwt.domain.repository.GoogleJsonWebTokenRepository;
+import flowfit.global.jwt.domain.entity.KakaoJsonWebToken;
+import flowfit.global.jwt.domain.repository.KakaoJsonWebTokenRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,33 +23,33 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class GoogleLoginServiceImpl implements GoogleLoginService {
+public class KakaoLoginServiceImpl implements KakaoLoginService {
 
-    private final  GoogleAccessTokenAndRefreshTokenService googleAccessTokenAndRefreshTokenService;
-    private final GoogleUserService googleUserService;
+    private final  KakaoAccessTokenAndRefreshTokenService KakaoAccessTokenAndRefreshTokenService;
+    private final KakaoUserService KakaoUserService;
     private final CreateAccessTokenAndRefreshTokenService createAccessTokenAndRefreshTokenService;
-    private final GoogleUserCreateService googleUserCreateService;
-    private final GoogleJsonWebTokenRepository googleTokenRepository;
+    private final KakaoUserCreateService KakaoUserCreateService;
+    private final KakaoJsonWebTokenRepository KakaoTokenRepository;
 
     @Override
     public void login(String code, HttpServletResponse response) throws IOException {
-        OAuth2TokenResponse oAuth2TokenResponse = googleAccessTokenAndRefreshTokenService.getAccessTokenAndRefreshToken(code);
+        OAuth2TokenResponse oAuth2TokenResponse = KakaoAccessTokenAndRefreshTokenService.getAccessTokenAndRefreshToken(code);
 
-        OAuth2UserResponse oAuth2UserResponse = googleUserService.getUser(oAuth2TokenResponse.accessToken());
+        OAuth2UserResponse oAuth2UserResponse = KakaoUserService.getUser(oAuth2TokenResponse.accessToken());
 
-        Map<String, String> values = googleUserCreateService.createGoogleUser(oAuth2TokenResponse,  oAuth2UserResponse);
+        Map<String, String> values = KakaoUserCreateService.createKakaoUser(oAuth2TokenResponse,  oAuth2UserResponse);
 
         String userId = values.get("id");
         Role role = Role.valueOf(values.get("role"));
         String userEmail = values.get("email");
 
-        // Google 토큰 저장
-        GoogleJsonWebToken googleToken = GoogleJsonWebToken.builder()
+        // Kakao 토큰 저장
+        KakaoJsonWebToken KakaoToken = KakaoJsonWebToken.builder()
                 .userId(userId)
                 .accessToken(oAuth2TokenResponse.accessToken())
                 .refreshToken(oAuth2TokenResponse.refreshToken())
                 .build();
-        googleTokenRepository.save(googleToken);
+        KakaoTokenRepository.save(KakaoToken);
 
         Map<String, String> tokens = createAccessTokenAndRefreshTokenService.createAccessTokenAndRefreshToken(userId, role, userEmail);
 

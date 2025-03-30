@@ -1,10 +1,10 @@
 package flowfit.domain.oauth2.application.service.impl;
 
-import flowfit.domain.oauth2.application.service.GoogleAccessTokenAndRefreshTokenService;
-import flowfit.domain.oauth2.application.service.GoogleTokenService;
+import flowfit.domain.oauth2.application.service.KakaoAccessTokenAndRefreshTokenService;
+import flowfit.domain.oauth2.application.service.KakaoTokenService;
 import flowfit.domain.oauth2.presentation.dto.response.OAuth2TokenResponse;
-import flowfit.global.jwt.domain.entity.GoogleJsonWebToken;
-import flowfit.global.jwt.domain.repository.GoogleJsonWebTokenRepository;
+import flowfit.global.jwt.domain.entity.KakaoJsonWebToken;
+import flowfit.global.jwt.domain.repository.KakaoJsonWebTokenRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,26 +17,26 @@ import java.time.LocalDateTime;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class GoogleTokenServiceImpl implements GoogleTokenService {
-    private final GoogleJsonWebTokenRepository googleTokenRepository;
-    private final GoogleAccessTokenAndRefreshTokenService tokenService;
+public class KakaoTokenServiceImpl implements KakaoTokenService {
+    private final KakaoJsonWebTokenRepository KakaoTokenRepository;
+    private final KakaoAccessTokenAndRefreshTokenService tokenService;
 
     @Override
     public String getValidAccessToken(String userId) {
-        GoogleJsonWebToken token = googleTokenRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Google 토큰을 찾을 수 없습니다."));
+        KakaoJsonWebToken token = KakaoTokenRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Kakao 토큰을 찾을 수 없습니다."));
 
         if (token.getExpiresIn() == null || token.getExpiresIn().minusMinutes(10).isBefore(LocalDateTime.now())) {
             OAuth2TokenResponse newToken = tokenService.refreshAccessToken(token.getRefreshToken());
 
             // 새 토큰 저장
-            GoogleJsonWebToken updatedToken = GoogleJsonWebToken.builder()
+            KakaoJsonWebToken updatedToken = KakaoJsonWebToken.builder()
                     .userId(userId)
                     .accessToken(newToken.accessToken())
                     .refreshToken(token.getRefreshToken()) // refresh token은 유지
                     .expiresIn(LocalDateTime.now().plusHours(1))
                     .build();
-            googleTokenRepository.save(updatedToken);
+            KakaoTokenRepository.save(updatedToken);
 
             log.info("리프레쉬 토큰 재발급");
 

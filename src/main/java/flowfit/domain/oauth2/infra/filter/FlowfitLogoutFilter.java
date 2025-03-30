@@ -3,7 +3,7 @@ package flowfit.domain.oauth2.infra.filter;
 import flowfit.domain.oauth2.infra.exception.InvalidRefreshTokenException;
 import flowfit.domain.oauth2.infra.exception.RefreshTokenNotExistException;
 import flowfit.global.jwt.domain.entity.JsonWebToken;
-import flowfit.global.jwt.domain.repository.GoogleJsonWebTokenRepository;
+import flowfit.global.jwt.domain.repository.KakaoJsonWebTokenRepository;
 import flowfit.global.jwt.domain.repository.JsonWebTokenRepository;
 import flowfit.global.jwt.util.JWTUtil;
 import jakarta.servlet.FilterChain;
@@ -24,7 +24,7 @@ public class FlowfitLogoutFilter extends GenericFilterBean {
 
     private final JWTUtil jwtUtil;
     private final JsonWebTokenRepository jsonWebTokenRepository;
-    private final GoogleJsonWebTokenRepository googleJsonWebTokenRepository;
+    private final KakaoJsonWebTokenRepository KakaoJsonWebTokenRepository;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -50,7 +50,7 @@ public class FlowfitLogoutFilter extends GenericFilterBean {
     private void LogoutProcess(String refreshToken, HttpServletResponse response) {
         JsonWebToken jsonWebToken = jsonWebTokenRepository.findById(refreshToken).orElseThrow(RefreshTokenNotExistException::new);
 
-        googleJsonWebTokenRepository.deleteById(jsonWebToken.getProviderId());
+        KakaoJsonWebTokenRepository.deleteById(jsonWebToken.getProviderId());
         jsonWebTokenRepository.delete(jsonWebToken);
 
         response.addHeader("Authorization", "Bearer ");

@@ -1,10 +1,12 @@
 package flowfit.domain.oauth2.application.service.impl;
 
 import flowfit.domain.oauth2.application.service.LoginLinkService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class LoginLinkServiceImpl implements LoginLinkService {
 
     @Value("${oauth2.base-url}")
@@ -23,13 +25,9 @@ public class LoginLinkServiceImpl implements LoginLinkService {
                 clientId +
                 "&redirect_uri=" +
                 redirectUri +
-                "&response_type=code&" +
-                "access_type=offline&" +
-                "scope=https://www.googleapis.com/auth/userinfo.email+" +
-                "https://www.googleapis.com/auth/userinfo.profile+" +
-                "https://www.googleapis.com/auth/calendar+" +
-                "https://www.googleapis.com/auth/calendar.events" +
-                "&prompt=consent";
+                "&response_type=code" +
+                "&scope=profile_nickname,profile_image,account_email";  // 필요한 Scope를 콤마로 구분
     }
+
 
 }

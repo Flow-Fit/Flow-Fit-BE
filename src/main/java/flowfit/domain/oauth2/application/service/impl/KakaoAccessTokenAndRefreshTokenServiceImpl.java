@@ -1,17 +1,17 @@
 package flowfit.domain.oauth2.application.service.impl;
 
-import flowfit.domain.oauth2.application.service.GoogleAccessTokenAndRefreshTokenService;
+import flowfit.domain.oauth2.application.service.KakaoAccessTokenAndRefreshTokenService;
 import flowfit.domain.oauth2.presentation.dto.response.OAuth2TokenResponse;
-import flowfit.global.infra.feignclient.GoogleOAuth2URLFeignClient;
+import flowfit.global.infra.feignclient.KakaoOAuth2URLFeignClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class GoogleAccessTokenAndRefreshTokenServiceImpl implements GoogleAccessTokenAndRefreshTokenService {
+public class KakaoAccessTokenAndRefreshTokenServiceImpl implements KakaoAccessTokenAndRefreshTokenService {
 
-    private final GoogleOAuth2URLFeignClient googleOAuth2URLFeignClient;
+    private final KakaoOAuth2URLFeignClient KakaoOAuth2URLFeignClient;
 
     @Value("${oauth2.client-id}")
     private String clientId;
@@ -24,7 +24,7 @@ public class GoogleAccessTokenAndRefreshTokenServiceImpl implements GoogleAccess
 
     @Override
     public OAuth2TokenResponse getAccessTokenAndRefreshToken(String code) {
-        return googleOAuth2URLFeignClient.getAccessToken(
+        return KakaoOAuth2URLFeignClient.getAccessToken(
                 code,
                 clientId,
                 clientSecret,
@@ -36,7 +36,7 @@ public class GoogleAccessTokenAndRefreshTokenServiceImpl implements GoogleAccess
     @Override
     public OAuth2TokenResponse refreshAccessToken(String refreshToken) {
         // refresh token을 사용해 새로운 access token을 발급받는 로직
-        return googleOAuth2URLFeignClient.refreshToken(
+        return KakaoOAuth2URLFeignClient.refreshToken(
                 "refresh_token",
                 refreshToken,
                 clientId,
