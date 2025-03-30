@@ -7,6 +7,7 @@ import flowfit.global.jwt.domain.repository.JsonWebTokenRepository;
 import flowfit.global.jwt.util.JWTUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class CreateAccessTokenAndRefreshTokenServiceImpl implements CreateAccessTokenAndRefreshTokenService {
 
     private final JWTUtil jwtUtil;

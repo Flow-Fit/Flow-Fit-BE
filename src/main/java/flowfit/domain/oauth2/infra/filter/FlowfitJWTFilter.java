@@ -36,6 +36,7 @@ public class FlowfitJWTFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
 
         if(requestURI.contains("/api/oauth2/login") || requestURI.contains("/api/oauth2/callback")) {
+            log.info("안녕?");
             String accessToken = jwtUtil.getAccessTokenFromHeaders(request);
             if(jwtUtil.jwtVerify(accessToken, "access")) {
                 throw new DuplicateLoginException();
