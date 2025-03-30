@@ -1,6 +1,6 @@
 package flowfit.domain.oauth2.presentation.controller;
 
-import flowfit.domain.oauth2.application.service.GoogleLoginService;
+import flowfit.domain.oauth2.application.service.KakaoLoginService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,12 +13,12 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/oauth2")
 @RequiredArgsConstructor
-public class GoogleLoginController {
+public class KakaoLoginController {
 
-    private final GoogleLoginService googleLoginService;
+    private final KakaoLoginService KakaoLoginService;
 
     @PostMapping("/callback")
     public void login(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
-        googleLoginService.login(code, response);
+        KakaoLoginService.login(code, response);
     }
 }

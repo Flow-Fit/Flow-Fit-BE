@@ -9,12 +9,12 @@ import org.springframework.data.redis.core.RedisHash;
 
 import java.time.LocalDateTime;
 
-@RedisHash(value = "GoogleJsonWebToken")
+@RedisHash(value = "KakaoJsonWebToken")
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GoogleJsonWebToken {
+public class KakaoJsonWebToken {
     @Id
     private String userId;
 

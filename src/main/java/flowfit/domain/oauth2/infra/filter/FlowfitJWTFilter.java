@@ -69,7 +69,7 @@ public class FlowfitJWTFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         log.info("인증 설정 완료: {}", SecurityContextHolder.getContext().getAuthentication());
         filterChain.doFilter(request, response);
-        log.info("2");
+
     }
 
     @Override

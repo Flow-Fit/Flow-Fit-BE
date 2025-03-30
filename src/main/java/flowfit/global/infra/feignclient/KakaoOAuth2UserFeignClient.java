@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(
-        name = "GoogleOAuth2UserInfo",
-        url = "https://www.googleapis.com"
+        name = "KakaoOAuth2UserInfo",
+        url = "https://kapi.kakao.com"
 )
-public interface GoogleOAuth2UserFeignClient {
+public interface KakaoOAuth2UserFeignClient {
 
-    @GetMapping(value = "/oauth2/v3/userinfo")
+    @GetMapping(value = "/v2/user/me")
     OAuth2UserResponse getUserInfo(@RequestHeader("Authorization") String accessToken);
 
 }

@@ -4,6 +4,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public interface GoogleLoginService {
+public interface KakaoLoginService {
     void login(String code, HttpServletResponse response) throws IOException;
 }

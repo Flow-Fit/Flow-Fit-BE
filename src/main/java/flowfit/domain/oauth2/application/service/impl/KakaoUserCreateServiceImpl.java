@@ -1,13 +1,13 @@
 package flowfit.domain.oauth2.application.service.impl;
 
-import flowfit.domain.oauth2.application.service.GoogleUserCreateService;
+import flowfit.domain.oauth2.application.service.KakaoUserCreateService;
 import flowfit.domain.oauth2.presentation.dto.response.OAuth2TokenResponse;
 import flowfit.domain.oauth2.presentation.dto.response.OAuth2UserResponse;
 import flowfit.domain.user.domain.entity.Role;
 import flowfit.domain.user.domain.entity.User;
 import flowfit.domain.user.domain.repository.UserRepository;
-import flowfit.global.jwt.domain.entity.GoogleJsonWebToken;
-import flowfit.global.jwt.domain.repository.GoogleJsonWebTokenRepository;
+import flowfit.global.jwt.domain.entity.KakaoJsonWebToken;
+import flowfit.global.jwt.domain.repository.KakaoJsonWebTokenRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,13 +20,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class GoogleUserCreateServiceImpl implements GoogleUserCreateService {
+public class KakaoUserCreateServiceImpl implements KakaoUserCreateService {
 
     private final UserRepository userRepository;
-    private final GoogleJsonWebTokenRepository googleJsonWebTokenRepository;
+    private final KakaoJsonWebTokenRepository KakaoJsonWebTokenRepository;
 
     @Override
-    public Map<String, String> createGoogleUser(OAuth2TokenResponse oAuth2TokenResponse, OAuth2UserResponse oAuth2UserResponse) {
+    public Map<String, String> createKakaoUser(OAuth2TokenResponse oAuth2TokenResponse, OAuth2UserResponse oAuth2UserResponse) {
         User user = userRepository.findById(oAuth2UserResponse.id()).orElse(null);
 
         if(user == null) {
@@ -47,20 +47,20 @@ public class GoogleUserCreateServiceImpl implements GoogleUserCreateService {
 
         LocalDateTime now = LocalDateTime.now().plusSeconds(oAuth2TokenResponse.expiresIn());
 
-        GoogleJsonWebToken googleJsonWebToken = GoogleJsonWebToken.builder()
+        KakaoJsonWebToken kakaoJsonWebToken = KakaoJsonWebToken.builder()
                 .userId(user.getId())
                 .accessToken(oAuth2TokenResponse.accessToken())
                 .refreshToken(oAuth2TokenResponse.refreshToken())
                 .expiresIn(now)
                 .build();
 
-        googleJsonWebTokenRepository.deleteById(user.getId());
-        googleJsonWebTokenRepository.save(googleJsonWebToken);
+        KakaoJsonWebTokenRepository.deleteById(user.getId());
+        KakaoJsonWebTokenRepository.save(kakaoJsonWebToken);
 
         return Map.of(
                 "id", user.getId(),
                 "role", user.getRole().toString(),
                 "email", user.getEmail()
-                );
+        );
     }
 }
