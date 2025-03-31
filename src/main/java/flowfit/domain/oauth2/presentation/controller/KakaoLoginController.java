@@ -1,5 +1,6 @@
 package flowfit.domain.oauth2.presentation.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import flowfit.domain.oauth2.application.service.KakaoLoginService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/oauth2")
@@ -19,8 +22,10 @@ public class KakaoLoginController {
 
     @GetMapping("/callback")
     public void login(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
-        KakaoLoginService.login(code, response);
-        log.info("응답 Authorization 헤더: {}", response.getHeader(HttpHeaders.AUTHORIZATION));
-        log.info("응답 Set-Cookie 헤더: {}", response.getHeader(HttpHeaders.SET_COOKIE));
+        Map<String, String> tokens = KakaoLoginService.login(code,response);
+        log.info("✅ Response Headers - Authorization: {}", response.getHeader(HttpHeaders.AUTHORIZATION));
+        log.info("✅ Response Headers - Set-Cookie: {}", response.getHeader(HttpHeaders.SET_COOKIE));
+
     }
+
 }

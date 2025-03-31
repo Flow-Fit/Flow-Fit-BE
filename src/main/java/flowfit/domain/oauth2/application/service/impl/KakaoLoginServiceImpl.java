@@ -29,10 +29,10 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
     private final KakaoUserService KakaoUserService;
     private final CreateAccessTokenAndRefreshTokenService createAccessTokenAndRefreshTokenService;
     private final KakaoUserCreateService KakaoUserCreateService;
-    private final KakaoJsonWebTokenRepository KakaoTokenRepository;
+    private final KakaoJsonWebTokenRepository kakaoJsonWebTokenRepository;
 
     @Override
-    public void login(String code, HttpServletResponse response) throws IOException {
+    public Map<String, String> login(String code, HttpServletResponse response) throws IOException {
         OAuth2TokenResponse oAuth2TokenResponse = KakaoAccessTokenAndRefreshTokenService.getAccessTokenAndRefreshToken(code);
 
         OAuth2UserResponse oAuth2UserResponse = KakaoUserService.getUser(oAuth2TokenResponse.accessToken());
@@ -43,15 +43,13 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
         Role role = Role.valueOf(values.get("role"));
         String userEmail = values.get("email");
 
-        log.info(oAuth2TokenResponse.accessToken());
-        log.info(oAuth2TokenResponse.refreshToken());
         // Kakao 토큰 저장
         KakaoJsonWebToken KakaoToken = KakaoJsonWebToken.builder()
                 .userId(userId)
                 .accessToken(oAuth2TokenResponse.accessToken())
                 .refreshToken(oAuth2TokenResponse.refreshToken())
                 .build();
-        KakaoTokenRepository.save(KakaoToken);
+        kakaoJsonWebTokenRepository.save(KakaoToken);
 
         Map<String, String> tokens = createAccessTokenAndRefreshTokenService.createAccessTokenAndRefreshToken(userId, role, userEmail);
 
@@ -62,5 +60,6 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
         response.setContentType("application/json");
 
         response.getWriter().write("Successfully Login");
+        return tokens;
     }
 }
