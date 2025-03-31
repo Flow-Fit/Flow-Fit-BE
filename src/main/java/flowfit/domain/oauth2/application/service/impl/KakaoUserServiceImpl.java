@@ -4,9 +4,11 @@ import flowfit.domain.oauth2.application.service.KakaoUserService;
 import flowfit.domain.oauth2.presentation.dto.response.OAuth2UserResponse;
 import flowfit.global.infra.feignclient.KakaoOAuth2UserFeignClient;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class KakaoUserServiceImpl implements KakaoUserService {
 
@@ -14,6 +16,8 @@ public class KakaoUserServiceImpl implements KakaoUserService {
 
     @Override
     public OAuth2UserResponse getUser(String accessToken) {
-        return KakaoOAuth2UserFeignClient.getUserInfo("Bearer " + accessToken);
+        OAuth2UserResponse response = KakaoOAuth2UserFeignClient.getUserInfo("Bearer " + accessToken);
+        log.info("카카오 API 응답: {}", response);
+        return response;
     }
 }

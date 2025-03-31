@@ -43,6 +43,8 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
         Role role = Role.valueOf(values.get("role"));
         String userEmail = values.get("email");
 
+        log.info(oAuth2TokenResponse.accessToken());
+        log.info(oAuth2TokenResponse.refreshToken());
         // Kakao 토큰 저장
         KakaoJsonWebToken KakaoToken = KakaoJsonWebToken.builder()
                 .userId(userId)

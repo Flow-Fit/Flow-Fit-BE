@@ -38,7 +38,7 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     private final JsonWebTokenRepository jsonWebTokenRepository;
     private final KakaoJsonWebTokenRepository KakaoJsonWebTokenRepository;
-    private final List<String> excludedUrls = Arrays.asList("/api/reissue", "/api/oauth2/login", "/api/users/join", "/api/users/login", "/api/healthcheck", "/api/oauth2/callback");
+    private final List<String> excludedUrls = Arrays.asList("/favicon.ico","/api/reissue", "/api/oauth2/login", "/api/users/join", "/api/users/login", "/api/healthcheck", "/api/oauth2/callback");
 
 
     @Bean
@@ -69,6 +69,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/oauth2/callback").permitAll()
                         .requestMatchers("/api/users/join").permitAll()
                         .requestMatchers("/api/users/login").permitAll()
+                        .requestMatchers("/favicon.ico").permitAll()
                         .requestMatchers("/api/reissue").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session
