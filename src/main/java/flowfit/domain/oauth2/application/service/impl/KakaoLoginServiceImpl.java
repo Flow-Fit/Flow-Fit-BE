@@ -28,16 +28,16 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
     private final  KakaoAccessTokenAndRefreshTokenService KakaoAccessTokenAndRefreshTokenService;
     private final KakaoUserService KakaoUserService;
     private final CreateAccessTokenAndRefreshTokenService createAccessTokenAndRefreshTokenService;
-    private final KakaoUserCreateService KakaoUserCreateService;
+    private final KakaoUserCreateService kakaoUserCreateService;
     private final KakaoJsonWebTokenRepository kakaoJsonWebTokenRepository;
 
     @Override
-    public Map<String, String> login(String code, HttpServletResponse response) throws IOException {
+    public Map<String, String> login(String code, HttpServletResponse response, String type) throws IOException {
         OAuth2TokenResponse oAuth2TokenResponse = KakaoAccessTokenAndRefreshTokenService.getAccessTokenAndRefreshToken(code);
 
         OAuth2UserResponse oAuth2UserResponse = KakaoUserService.getUser(oAuth2TokenResponse.accessToken());
 
-        Map<String, String> values = KakaoUserCreateService.createKakaoUser(oAuth2TokenResponse,  oAuth2UserResponse);
+        Map<String, String> values = kakaoUserCreateService.createKakaoUser(oAuth2TokenResponse,  oAuth2UserResponse, type);
 
         String userId = values.get("id");
         Role role = Role.valueOf(values.get("role"));

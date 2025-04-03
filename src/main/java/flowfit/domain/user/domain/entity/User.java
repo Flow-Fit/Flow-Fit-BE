@@ -17,6 +17,8 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @DynamicUpdate
+@Inheritance(strategy = InheritanceType.JOINED)  // 상속 전략을 JOINED로 설정
+@DiscriminatorColumn(name = "user_type")  // 자식 클래스 구분을 위한 컬럼
 public class User {
     @Id
     @Column(unique = true, nullable = false)
@@ -25,13 +27,6 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    //아이디
-    @Column(nullable = true)
-    private String username;
-
-    @Column(nullable = true)
-    private String password;
-
     // 이름
     @Column(nullable = false)
     private String name;
@@ -39,8 +34,8 @@ public class User {
     @Column(nullable = true)
     private String profile;
 
-    @Column(nullable = true)
-    private String phoneNumber;
+    @Column(nullable = false)
+    private boolean status;
 
     @CreationTimestamp
     @Column(nullable = false)
@@ -50,29 +45,23 @@ public class User {
     @Column(name = "role", nullable = false)
     private Role role;
 
-    // 🔽 Member와 1:1 관계 (양방향)
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Member member;
-
-    // 🔽 Trainer와 1:1 관계 (양방향)
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Trainer trainer;
-
     @Builder
-    public User(String id, String email, String username, String password, String name,
-                String profile, String phoneNumber, Role role) {
+    public User(String id, String email, String name,
+                String profile, Role role, boolean status) {
         this.id = id;
         this.email = email;
-        this.username = username;
-        this.password = password;
         this.name = name;
         this.profile = profile;
-        this.phoneNumber = phoneNumber;
         this.role = role;
+        this.status= status;
     }
     public void updateNameAndEmailAndProfile(String name, String email, String profile) {
         this.name = name;
         this.email = email;
         this.profile = profile;
+    }
+
+    public void updateStatus(boolean status) {
+        this.status = status;
     }
 }
