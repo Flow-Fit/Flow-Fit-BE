@@ -8,12 +8,12 @@ import java.util.Arrays;
 @Getter
 
 public enum Status {
-    PROPOSED("승인 대기"),                        // 트레이너가 제안한 상태 (승인 대기)
-    SCHEDULED("승인 확정"),                       // PT가 확정된 상태 (회원 승인 또는 자동 확정)
-    TRAINER_CANCELED_DEDUCTED("트레이너 취소(차감)"),     // 확정 상태에서 트레이너가 취소한 상태 (차감)
-    TRAINER_CANCELED_NON_DEDUCTED("트레이너 취소(미차감)"), // 확정 상태에서 트레이너가 취소한 상태 (미차감)
-    COMPLETED("완료"),                       // 완료된 상태 (회원 승인 혹은 자동 완료)
-    DISPUTED("이의제기");                   // 회원이 완료/취소 상태에 대해 이의를 제기한 상태
+
+    CANCEL_M("회원 취소(차감)"),     // 취소1
+    CANCEL_T("트레이너 취소(미차감)"),     // 취소2
+    PROCESS("진행"), // 세션 진행
+    CONFLICT("이의제기"), // 세션 이의 제기 즉 세션 진행과 완료 사이
+    COMPLETED("완료"); // 세션 이의 제기 까지 끝났으면 완료
 
     private final String key;
 
