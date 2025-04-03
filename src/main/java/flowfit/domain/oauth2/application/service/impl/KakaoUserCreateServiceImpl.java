@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,8 +41,10 @@ public class KakaoUserCreateServiceImpl implements KakaoUserCreateService {
             log.error("카카오에서 반환된 사용자 ID가 null 또는 빈 문자열입니다");
             throw new IllegalArgumentException("사용자 ID가 유효하지 않습니다");
         }
+        log.info(type);
         // 트레이너
         if (type.equals(Role.TRAINER.name())) {
+
             user = userRepository.findById("TRAINER " + oAuth2UserResponse.id()).orElse(null);
             if (user == null) {
 
@@ -54,7 +57,9 @@ public class KakaoUserCreateServiceImpl implements KakaoUserCreateService {
                         .status(true)
                         .build();
 
-                trainerRepository.save(trainer);
+                user = trainer;
+                Trainer save = trainerRepository.save(trainer);
+                log.info(save.getName());
 
             } else {
                 user.updateNameAndEmailAndProfile(oAuth2UserResponse.getName(), oAuth2UserResponse.getEmail(), oAuth2UserResponse.getProfile());
@@ -72,7 +77,7 @@ public class KakaoUserCreateServiceImpl implements KakaoUserCreateService {
                         .role(Role.MEMBER)
                         .status(false)
                         .build();
-
+                user = member;
                 memberRepository.save(member);
 
             } else {
@@ -80,23 +85,26 @@ public class KakaoUserCreateServiceImpl implements KakaoUserCreateService {
             }
         }
 
+        Optional<User> findUsero = userRepository.findById(type + " " + oAuth2UserResponse.id());
+
+        User findUser = findUsero.get();
 
         LocalDateTime now = LocalDateTime.now().plusSeconds(oAuth2TokenResponse.expiresIn());
 
         KakaoJsonWebToken kakaoJsonWebToken = KakaoJsonWebToken.builder()
-                .userId(user.getId())
+                .userId(findUser.getId())
                 .accessToken(oAuth2TokenResponse.accessToken())
                 .refreshToken(oAuth2TokenResponse.refreshToken())
                 .expiresIn(now)
                 .build();
 
-        KakaoJsonWebTokenRepository.deleteById(user.getId());
+        KakaoJsonWebTokenRepository.deleteById(findUser.getId());
         KakaoJsonWebTokenRepository.save(kakaoJsonWebToken);
 
         return Map.of(
-                "id", user.getId(),
-                "role", user.getRole().toString(),
-                "email", user.getEmail()
+                "id", findUser.getId(),
+                "role", findUser.getRole().toString(),
+                "email", findUser.getEmail()
         );
     }
 }
