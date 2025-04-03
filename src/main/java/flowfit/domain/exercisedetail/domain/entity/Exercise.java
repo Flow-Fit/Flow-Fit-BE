@@ -1,23 +1,15 @@
 package flowfit.domain.exercisedetail.domain.entity;
 
 
-import flowfit.domain.schedule.domain.entity.Schedule;
-import flowfit.domain.schedule.domain.entity.Status;
-import flowfit.domain.user.domain.entity.member.Member;
-import flowfit.domain.user.domain.entity.trainer.Trainer;
+import flowfit.domain.schedule.domain.entity.PtSession;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
-@Entity
+//@Entity
 @NoArgsConstructor
 @DynamicUpdate
 public class Exercise {
@@ -45,10 +37,10 @@ public class Exercise {
     // Schedule와 연관관계 (ManyToOne)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id", nullable = false)
-    private Schedule schedule;
+    private PtSession schedule;
     @Builder
     public Exercise(String exerciseName, Integer reps, Integer sets, Float weight,
-                    Integer duration, Schedule schedule) {
+                    Integer duration, PtSession schedule) {
         this.exerciseName = exerciseName;
         this.reps = reps;
         this.sets = sets;

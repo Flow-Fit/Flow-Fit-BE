@@ -19,14 +19,14 @@ public class LoginLinkServiceImpl implements LoginLinkService {
     private String redirectUri;
 
     @Override
-    public String getLoginLink() {
+    public String getLoginLink(String type) {
+
         return baseUrl +
-                "?client_id=" +
-                clientId +
-                "&redirect_uri=" +
-                redirectUri +
+                "?client_id=" + clientId +
+                "&redirect_uri=" + redirectUri +
                 "&response_type=code" +
-                "&scope=profile_nickname,profile_image,account_email";  // 필요한 Scope를 콤마로 구분
+                "&scope=profile_nickname,profile_image,account_email" +
+                "&state=" + type;  // type 값을 state로 전달합니다.
     }
 
 

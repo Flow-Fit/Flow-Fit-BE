@@ -21,8 +21,9 @@ public class KakaoLoginController {
     private final KakaoLoginService KakaoLoginService;
 
     @GetMapping("/callback")
-    public void login(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
-        Map<String, String> tokens = KakaoLoginService.login(code,response);
+    public void login(@RequestParam("code") String code,  @RequestParam(required = false) String state,
+                      HttpServletResponse response) throws IOException {
+        Map<String, String> tokens = KakaoLoginService.login(code,response,state);
         log.info("✅ Response Headers - Authorization: {}", response.getHeader(HttpHeaders.AUTHORIZATION));
         log.info("✅ Response Headers - Set-Cookie: {}", response.getHeader(HttpHeaders.SET_COOKIE));
 

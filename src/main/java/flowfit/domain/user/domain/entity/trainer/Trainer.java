@@ -1,39 +1,42 @@
 package flowfit.domain.user.domain.entity.trainer;
 
-import flowfit.domain.schedule.domain.entity.Schedule;
+import flowfit.domain.schedule.domain.entity.PtSession;
 import flowfit.domain.user.domain.entity.User;
-import flowfit.domain.user.domain.entity.trainermember.TrainerMember;
+import flowfit.domain.user.domain.entity.trainermember.PtRelation;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.*;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@DynamicUpdate
 @Table(name = "trainer")
-public class Trainer {
+@SuperBuilder
+@DiscriminatorValue("TRAINER")  // 부모 클래스에서의 타입 구분 값 설정
+public class Trainer extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    // User와 1:1 관계 (Trainer 입장에서 주인 아님)
-    @OneToOne
-    @JoinColumn(name = "userId", nullable = false, unique = true)
-    private User user;
+    private String trainerCode;
+
+    private String gymPlace;
 
     // 🔽 TrainerMember 양방향 관계
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TrainerMember> trainerMembers = new ArrayList<>();
+    private List<PtRelation> trainerMembers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
-    private List<Schedule> schedules = new ArrayList<>();
 
-    @Builder
-    public Trainer(User user){
-        this.user=user;
+
+
+    public void updateGymPlace(String newGymPlace) {
+        this.gymPlace = newGymPlace;
+    }
+
+    public void updateTrainerCode(String newTrainerCode) {
+        this.trainerCode = newTrainerCode;
     }
 }

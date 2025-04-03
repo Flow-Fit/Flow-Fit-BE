@@ -6,5 +6,5 @@ import java.io.IOException;
 import java.util.Map;
 
 public interface KakaoLoginService {
-    Map<String, String> login(String code, HttpServletResponse response) throws IOException;
+    Map<String, String> login(String code, HttpServletResponse response, String type) throws IOException;
 }
