@@ -40,7 +40,7 @@ public class InfoServiceImpl implements InfoService {
             Member member = memberRepository.findById(userId).orElse(null);
             if (member != null) {
                 member.updateStatus(true);
-                member.updateMemberInfo(info.phoneNumber(), info.height(), info.weight(), info.birthDate());
+                member.updateMemberInfo(info.phoneNumber(), info.gender(), info.height(), info.weight(), info.birthDate(), true);
             } else {
                 throw new UserNotFoundException("회원 정보가 없습니다.");
             }
@@ -53,10 +53,13 @@ public class InfoServiceImpl implements InfoService {
 
         StringBuilder hexString = new StringBuilder();
 
-        for (int i = 0; i < 5; i++) {  // 원하는 길이만큼만 사용 (예: 5글자)
+        for (int i = 0; i < 2; i++) {  // 원하는 길이만큼만 사용 (예: 4글자)
             hexString.append(Integer.toHexString(0xFF & hash[i]));
         }
-
+        // 4자리를 강제로 맞추기 위해, 만약 결과가 4자리가 안 되면 앞에 0을 추가
+        while (hexString.length() < 4) {
+            hexString.insert(0, "0");
+        }
         return hexString.toString().toUpperCase();
     }
 }

@@ -1,7 +1,7 @@
-package flowfit.domain.exercisedetail.domain.entity;
+package flowfit.domain.exerciserecord.domain.entity;
 
 
-import flowfit.domain.ptrelation.domain.entity.PtSession;
+import flowfit.domain.ptsession.domain.entity.PtSession;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
 //@Entity
 @NoArgsConstructor
 @DynamicUpdate
-public class Exercise {
+public class ExerciseRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -39,8 +39,8 @@ public class Exercise {
     @JoinColumn(name = "schedule_id", nullable = false)
     private PtSession schedule;
     @Builder
-    public Exercise(String exerciseName, Integer reps, Integer sets, Float weight,
-                    Integer duration, PtSession schedule) {
+    public ExerciseRecord(String exerciseName, Integer reps, Integer sets, Float weight,
+                          Integer duration, PtSession schedule) {
         this.exerciseName = exerciseName;
         this.reps = reps;
         this.sets = sets;

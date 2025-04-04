@@ -1,6 +1,6 @@
 package flowfit.domain.user.domain.entity.ptrelation;
 
-import flowfit.domain.ptrelation.domain.entity.PtSession;
+import flowfit.domain.ptsession.domain.entity.PtSession;
 import flowfit.domain.user.domain.entity.member.Member;
 import flowfit.domain.user.domain.entity.trainer.Trainer;
 import jakarta.persistence.*;
@@ -42,6 +42,11 @@ public class PtRelation {
     @Column(nullable = false)
     private LocalDateTime ptLastDate;
 
+
+    // pt 최종상태(완료(PT수행 모두), 진행, 시작전, 미완료(PT 수행 취소) )
+    @Column(nullable = false)
+    private PtFinal ptFinal;
+
     // 세션 총 금액
     @Column(nullable = false)
     private int totalMoney;
@@ -61,11 +66,12 @@ public class PtRelation {
     // === 빌더 패턴 추가 ===
     @Builder
     public PtRelation(Trainer trainer, Member member, LocalDateTime ptStartDate, LocalDateTime ptLastDate,
-                      int totalMoney, int session) {
+                      PtFinal ptFinal, int totalMoney, int session) {
         this.trainer = trainer;
         this.member = member;
         this.ptStartDate = ptStartDate;
         this.ptLastDate = ptLastDate;
+        this.ptFinal = ptFinal;
         this.totalMoney = totalMoney;
         this.session = session;
     }
@@ -90,5 +96,9 @@ public class PtRelation {
 
     public void updateAlias(String alias) {
         this.alias = alias;
+    }
+
+    public void updatePtFinal(PtFinal ptFinal) {
+        this.ptFinal = ptFinal;
     }
 }

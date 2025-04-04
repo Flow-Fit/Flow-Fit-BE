@@ -1,4 +1,4 @@
-package flowfit.domain.ptrelation.domain.entity;
+package flowfit.domain.ptsession.domain.entity;
 
 import flowfit.domain.user.domain.entity.ptrelation.PtRelation;
 import jakarta.persistence.*;

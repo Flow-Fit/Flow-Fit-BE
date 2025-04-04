@@ -9,6 +9,8 @@ public record InfoRequestDTO(
 
         String gymPlace,
 
+        String gender,
+
         String phoneNumber,
         double height,
 
