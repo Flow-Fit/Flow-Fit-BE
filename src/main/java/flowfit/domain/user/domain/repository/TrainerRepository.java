@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface TrainerRepository extends JpaRepository<Trainer, String> {
-
+    Optional<Trainer> findByTrainerCode(String trainerCode);
 
 }

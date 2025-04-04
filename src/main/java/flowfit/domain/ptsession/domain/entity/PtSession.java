@@ -1,6 +1,6 @@
 package flowfit.domain.ptsession.domain.entity;
 
-import flowfit.domain.user.domain.entity.ptrelation.PtRelation;
+import flowfit.domain.ptrelation.domain.entity.ptrelation.PtRelation;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
