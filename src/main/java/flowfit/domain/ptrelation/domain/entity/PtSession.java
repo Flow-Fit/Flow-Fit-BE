@@ -1,8 +1,6 @@
-package flowfit.domain.schedule.domain.entity;
+package flowfit.domain.ptrelation.domain.entity;
 
-import flowfit.domain.user.domain.entity.member.Member;
-import flowfit.domain.user.domain.entity.trainer.Trainer;
-import flowfit.domain.user.domain.entity.trainermember.PtRelation;
+import flowfit.domain.user.domain.entity.ptrelation.PtRelation;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

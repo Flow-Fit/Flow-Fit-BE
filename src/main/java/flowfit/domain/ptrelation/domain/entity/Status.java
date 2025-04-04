@@ -1,6 +1,5 @@
-package flowfit.domain.schedule.domain.entity;
+package flowfit.domain.ptrelation.domain.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Arrays;

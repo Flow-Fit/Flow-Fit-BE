@@ -1,6 +1,6 @@
-package flowfit.domain.user.domain.entity.trainermember;
+package flowfit.domain.user.domain.entity.ptrelation;
 
-import flowfit.domain.schedule.domain.entity.PtSession;
+import flowfit.domain.ptrelation.domain.entity.PtSession;
 import flowfit.domain.user.domain.entity.member.Member;
 import flowfit.domain.user.domain.entity.trainer.Trainer;
 import jakarta.persistence.*;
@@ -55,7 +55,7 @@ public class PtRelation {
 
 
     @OneToMany(mappedBy = "ptRelation", cascade = CascadeType.ALL)
-    private List<PtSession> schedules = new ArrayList<>();
+    private List<PtSession> ptSessions = new ArrayList<>();
 
 
     // === 빌더 패턴 추가 ===
