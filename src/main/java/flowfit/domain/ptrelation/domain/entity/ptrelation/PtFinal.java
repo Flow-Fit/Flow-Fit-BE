@@ -1,4 +1,4 @@
-package flowfit.domain.user.domain.entity.ptrelation;
+package flowfit.domain.ptrelation.domain.entity.ptrelation;
 
 import lombok.Getter;
 

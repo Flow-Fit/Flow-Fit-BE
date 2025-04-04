@@ -1,11 +1,9 @@
 package flowfit.domain.oauth2.application.service.impl;
 
-
 import flowfit.domain.oauth2.application.service.*;
 import flowfit.domain.oauth2.presentation.dto.response.OAuth2TokenResponse;
 import flowfit.domain.oauth2.presentation.dto.response.OAuth2UserResponse;
 import flowfit.domain.user.domain.entity.Role;
-
 
 import flowfit.global.jwt.domain.entity.KakaoJsonWebToken;
 import flowfit.global.jwt.domain.repository.KakaoJsonWebTokenRepository;
@@ -17,7 +15,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -25,11 +26,12 @@ import java.util.Map;
 @Slf4j
 public class KakaoLoginServiceImpl implements KakaoLoginService {
 
-    private final  KakaoAccessTokenAndRefreshTokenService KakaoAccessTokenAndRefreshTokenService;
+    private final KakaoAccessTokenAndRefreshTokenService KakaoAccessTokenAndRefreshTokenService;
     private final KakaoUserService KakaoUserService;
     private final CreateAccessTokenAndRefreshTokenService createAccessTokenAndRefreshTokenService;
     private final KakaoUserCreateService kakaoUserCreateService;
     private final KakaoJsonWebTokenRepository kakaoJsonWebTokenRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();  // JSON 변환을 위한 ObjectMapper
 
     @Override
     public Map<String, String> login(String code, HttpServletResponse response, String type) throws IOException {
@@ -56,10 +58,18 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
         response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokens.get("access_token"));
         response.addHeader(HttpHeaders.SET_COOKIE, tokens.get("refresh_token_cookie"));
 
+        // JSON 형태로 응답하기 위해 토큰 정보를 Map으로 정리
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("access_token", tokens.get("access_token"));
+        responseBody.put("refresh_token", tokens.get("refresh_token_cookie"));
+
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
 
-        response.getWriter().write("Successfully Login");
+        // Map을 JSON으로 변환해서 응답
+        response.getWriter().write(objectMapper.writeValueAsString(responseBody));
+
         return tokens;
     }
 }

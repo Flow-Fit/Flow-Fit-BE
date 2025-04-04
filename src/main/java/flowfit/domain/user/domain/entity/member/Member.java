@@ -1,7 +1,8 @@
 package flowfit.domain.user.domain.entity.member;
 
 import flowfit.domain.user.domain.entity.User;
-import flowfit.domain.user.domain.entity.ptrelation.PtRelation;
+import flowfit.domain.ptrelation.domain.entity.prepare.PreparePt;
+import flowfit.domain.ptrelation.domain.entity.ptrelation.PtRelation;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,9 @@ public class Member extends User {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PtRelation> ptRelations = new ArrayList<>();
 
+    // 🔽 preparePt 양방향 관계
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PreparePt> preparePts = new ArrayList<>();
 
     public void updatePhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;

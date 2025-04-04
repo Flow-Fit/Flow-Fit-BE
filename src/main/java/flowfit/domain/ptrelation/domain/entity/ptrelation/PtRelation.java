@@ -1,4 +1,4 @@
-package flowfit.domain.user.domain.entity.ptrelation;
+package flowfit.domain.ptrelation.domain.entity.ptrelation;
 
 import flowfit.domain.ptsession.domain.entity.PtSession;
 import flowfit.domain.user.domain.entity.member.Member;
@@ -44,6 +44,7 @@ public class PtRelation {
 
 
     // pt 최종상태(완료(PT수행 모두), 진행, 시작전, 미완료(PT 수행 취소) )
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PtFinal ptFinal;
 
