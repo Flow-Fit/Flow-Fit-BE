@@ -36,6 +36,7 @@ public class User {
     @Column(nullable = true)
     private String profile;
 
+    // 추가 정보 받았으면 true, 아니면 false
     @Column(nullable = false)
     private boolean status;
 
@@ -43,6 +44,7 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    // 유저 타입
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;

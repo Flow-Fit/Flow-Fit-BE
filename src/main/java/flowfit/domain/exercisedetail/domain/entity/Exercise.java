@@ -1,7 +1,7 @@
 package flowfit.domain.exercisedetail.domain.entity;
 
 
-import flowfit.domain.schedule.domain.entity.PtSession;
+import flowfit.domain.ptrelation.domain.entity.PtSession;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

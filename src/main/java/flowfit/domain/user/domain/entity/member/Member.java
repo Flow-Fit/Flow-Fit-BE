@@ -1,8 +1,7 @@
 package flowfit.domain.user.domain.entity.member;
 
-import flowfit.domain.schedule.domain.entity.PtSession;
 import flowfit.domain.user.domain.entity.User;
-import flowfit.domain.user.domain.entity.trainermember.PtRelation;
+import flowfit.domain.user.domain.entity.ptrelation.PtRelation;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +30,7 @@ public class Member extends User {
     private LocalDate birthDate;   // 생년월일 (형식: YYYY-MM-DD)
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PtRelation> trainerMembers = new ArrayList<>();
+    private List<PtRelation> ptRelations = new ArrayList<>();
 
 
 
