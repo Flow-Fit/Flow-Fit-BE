@@ -19,8 +19,8 @@ public class TrainerCodeController {
     private final TrainerCodeService trainerCodeService;
 
     @GetMapping
-    public ResponseEntity<TrainerCodeResponse> trainerCodeGet(@RequestBody TrainerCodeRequestDto dto) {
-        return ResponseEntity.status(200).body(TrainerCodeResponse.of(trainerCodeService.trainerCodeGet(dto)));
+    public ResponseEntity<TrainerCodeResponse> trainerCodeGet(@RequestParam String code) {
+        return ResponseEntity.status(200).body(TrainerCodeResponse.of(trainerCodeService.trainerCodeGet(code)));
     }
 
     @PostMapping

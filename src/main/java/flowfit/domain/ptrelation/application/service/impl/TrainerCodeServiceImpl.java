@@ -30,8 +30,8 @@ public class TrainerCodeServiceImpl implements TrainerCodeService {
     private final PreparePtRepository preparePtRepository;
 
     @Override
-    public String trainerCodeGet(TrainerCodeRequestDto dto) {
-        Trainer trainer = trainerRepository.findByTrainerCode(dto.code()).orElse(null);
+    public String trainerCodeGet(String code) {
+        Trainer trainer = trainerRepository.findByTrainerCode(code).orElse(null);
 
         if (trainer == null) {
             throw new TrainerCodeException();
