@@ -4,6 +4,7 @@ import flowfit.domain.user.domain.entity.User;
 import flowfit.domain.ptrelation.domain.entity.prepare.PreparePt;
 import flowfit.domain.ptrelation.domain.entity.ptrelation.PtRelation;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -26,10 +27,12 @@ public class Trainer extends User {
     private String gymPlace;
 
     // 🔽 ptRelation 양방향 관계
+    @Builder.Default
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PtRelation> ptRelations = new ArrayList<>();
 
     // 🔽 preparePt 양방향 관계
+    @Builder.Default
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PreparePt> preparePts = new ArrayList<>();
 

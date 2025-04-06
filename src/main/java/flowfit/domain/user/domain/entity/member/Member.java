@@ -4,6 +4,7 @@ import flowfit.domain.user.domain.entity.User;
 import flowfit.domain.ptrelation.domain.entity.prepare.PreparePt;
 import flowfit.domain.ptrelation.domain.entity.ptrelation.PtRelation;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -36,9 +37,11 @@ public class Member extends User {
     private boolean alarm; // 알람 받을지 안받을지(false면 안받고 true면 받음)
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<PtRelation> ptRelations = new ArrayList<>();
 
     // 🔽 preparePt 양방향 관계
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PreparePt> preparePts = new ArrayList<>();
 

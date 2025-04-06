@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +37,11 @@ public class PtRelation {
 
     // 등록일
     @Column(nullable = false)
-    private LocalDateTime ptStartDate;
+    private LocalDate ptStartDate;
 
     // 만료일
     @Column(nullable = false)
-    private LocalDateTime ptLastDate;
+    private LocalDate ptLastDate;
 
 
     // pt 최종상태(완료(PT수행 모두), 진행, 시작전, 미완료(PT 수행 취소) )
@@ -66,7 +67,7 @@ public class PtRelation {
 
     // === 빌더 패턴 추가 ===
     @Builder
-    public PtRelation(Trainer trainer, Member member, LocalDateTime ptStartDate, LocalDateTime ptLastDate,
+    public PtRelation(Trainer trainer, Member member, LocalDate ptStartDate, LocalDate ptLastDate,
                       PtFinal ptFinal, int totalMoney, int session) {
         this.trainer = trainer;
         this.member = member;
@@ -79,11 +80,11 @@ public class PtRelation {
 
     // === 업데이트 메서드들 ===
 
-    public void updatePtStartDate(LocalDateTime ptStartDate) {
+    public void updatePtStartDate(LocalDate ptStartDate) {
         this.ptStartDate = ptStartDate;
     }
 
-    public void updatePtLastDate(LocalDateTime ptLastDate) {
+    public void updatePtLastDate(LocalDate ptLastDate) {
         this.ptLastDate = ptLastDate;
     }
 

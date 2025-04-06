@@ -5,7 +5,7 @@ import flowfit.domain.ptrelation.presentation.dto.req.TrainerCodeRequestDto;
 
 public interface TrainerCodeService {
 
-    String trainerCodeGet(TrainerCodeRequestDto dto);
+    String trainerCodeGet(String code);
 
     void trainerCodePost(TrainerCodeRequestDto dto, String userId);
 
