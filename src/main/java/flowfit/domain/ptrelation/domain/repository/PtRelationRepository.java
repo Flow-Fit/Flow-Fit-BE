@@ -20,4 +20,6 @@ public interface PtRelationRepository extends JpaRepository<PtRelation, Long> {
     List<PtRelation> findAllByMember(Member member);
 
     List<PtRelation> findAllByTrainer(Trainer trainer);
+
+    Optional<PtRelation> findByIdAndTrainer(Long relationId, Trainer trainer);
 }

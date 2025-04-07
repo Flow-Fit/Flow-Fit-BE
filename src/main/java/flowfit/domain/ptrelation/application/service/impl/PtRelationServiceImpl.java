@@ -7,7 +7,6 @@ import flowfit.domain.ptrelation.domain.entity.ptrelation.PtRelation;
 import flowfit.domain.ptrelation.domain.repository.PreparePtRepository;
 import flowfit.domain.ptrelation.domain.repository.PtRelationRepository;
 import flowfit.domain.ptrelation.infra.exception.PrepareMemberExistException;
-import flowfit.domain.ptrelation.infra.exception.RelationAccessException;
 import flowfit.domain.ptrelation.infra.exception.RelationNotFoundException;
 import flowfit.domain.ptrelation.infra.exception.TrainerCodeException;
 import flowfit.domain.ptrelation.presentation.dto.req.PtRelationRequestDto;
@@ -15,6 +14,7 @@ import flowfit.domain.ptrelation.presentation.dto.res.TrainerRelationDetailRespo
 import flowfit.domain.ptrelation.presentation.dto.res.TrainerRelationResponse;
 import flowfit.domain.ptsession.domain.entity.PtSession;
 import flowfit.domain.ptsession.domain.entity.Status;
+import flowfit.domain.ptsession.domain.repository.PtSessionRepository;
 import flowfit.domain.user.domain.entity.member.Member;
 import flowfit.domain.user.domain.entity.trainer.Trainer;
 import flowfit.domain.user.domain.repository.MemberRepository;
@@ -35,6 +35,7 @@ public class PtRelationServiceImpl implements PtRelationService {
     private final MemberRepository memberRepository;
     private final TrainerRepository trainerRepository;
     private final PreparePtRepository preparePtRepository;
+    private final PtSessionRepository ptSessionRepository;
 
     @Override
     public void ptRelationSave(PtRelationRequestDto dto, String userId) {
@@ -110,7 +111,7 @@ public class PtRelationServiceImpl implements PtRelationService {
             TrainerRelationResponse res = TrainerRelationResponse.of(
                     ptRelation.getId(),
                     ptRelation.getMember().getName(),
-                    ptRelation.getAlias(),
+                    // ptRelation.getAlias(),
                     ptRelation.getPtStartDate(),
                     ptRelation.getPtLastDate(),
                     ptRelation.getTotalMoney(),
@@ -130,21 +131,16 @@ public class PtRelationServiceImpl implements PtRelationService {
             throw new UserNotFoundException("트레이너 정보가 없습니다.");
         }
 
-        PtRelation ptRelation = ptRelationRepository.findById(relationId).orElse(null);
+        PtRelation ptRelation = ptRelationRepository.findByIdAndTrainer(relationId, trainer).orElse(null);
 
+        // ptRelation이 없을 경우 에러
         if (ptRelation == null) {
             throw new RelationNotFoundException();
         }
 
-        if (ptRelation.getTrainer() != trainer) {
-            throw new RelationAccessException();
-        }
-
         // 사용된 PT 세션 수 계산 (Status가 COMPLETED인 세션만 계산)
-        int usedSessions = (int) ptRelation.getPtSessions().stream()
-                // 여기서 계산하는 게 좋을까요?? 외부로 빼거나 jpa로 정의??
-                .filter(session -> session.getStatus() == Status.COMPLETED)
-                .count();
+        List<PtSession> completedSessions = ptSessionRepository.findByPtRelationAndStatus(ptRelation, Status.COMPLETED);
+        int usedSessions = completedSessions.size();
 
         // 총 PT 횟수와 잔여 PT, 단가 계산
         int totalSession = ptRelation.getSession();
@@ -156,7 +152,7 @@ public class PtRelationServiceImpl implements PtRelationService {
                 ptRelation.getMember().getName(),
                 ptRelation.getMember().getPhoneNumber(),   // 회원 연락처
                 ptRelation.getMember().getBirthDate(),   // 회원 생년월일 (LocalDate 타입)
-                ptRelation.getAlias(),                   // 별명
+                // ptRelation.getAlias(),                   // 별명
                 ptRelation.getPtStartDate(),             // 등록일
                 ptRelation.getPtLastDate(),              // 만료일
                 remainingPt,                           // 잔여 PT

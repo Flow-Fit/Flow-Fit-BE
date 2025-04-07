@@ -6,7 +6,7 @@ import java.time.LocalDate;
 public record TrainerRelationResponse(
         Long id,
         String memberName,
-        String alias,
+        // String alias,    // 회원 별명
         LocalDate ptStartDate,
         LocalDate ptLastDate,
         int totalMoney,
@@ -16,12 +16,13 @@ public record TrainerRelationResponse(
     public static TrainerRelationResponse of(
             Long id,
             String memberName,
-            String alias,
+            // String alias,
             LocalDate ptStartDate,
             LocalDate ptLastDate,
             int totalMoney,
             int session,
             PtFinal ptFinal) {
-        return new TrainerRelationResponse(id, memberName, alias, ptStartDate, ptLastDate, totalMoney, session, ptFinal);
+        return new TrainerRelationResponse(id, memberName, //alias,
+                ptStartDate, ptLastDate, totalMoney, session, ptFinal);
     }
 }

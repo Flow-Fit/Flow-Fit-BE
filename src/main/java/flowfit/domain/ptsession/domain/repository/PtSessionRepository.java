@@ -3,6 +3,7 @@ package flowfit.domain.ptsession.domain.repository;
 import feign.Param;
 import flowfit.domain.ptrelation.domain.entity.ptrelation.PtRelation;
 import flowfit.domain.ptsession.domain.entity.PtSession;
+import flowfit.domain.ptsession.domain.entity.Status;
 import flowfit.domain.user.domain.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,4 +29,6 @@ public interface PtSessionRepository extends JpaRepository<PtSession, Long> {
 
 
     List<PtSession> findAllByPtRelation(PtRelation ptRelation);
+
+    List<PtSession> findByPtRelationAndStatus(PtRelation ptRelation, Status status);
 }

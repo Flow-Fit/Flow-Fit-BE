@@ -9,7 +9,7 @@ public record TrainerRelationDetailResponse(
         String memberContact,   // 회원 연락처
         LocalDate memberBirth,  // 생년월일
         // String memberNotes,     // 특이사항
-        String alias,           // 별명
+        // String alias,           // 별명
         LocalDate ptStartDate,  // 등록일
         LocalDate ptLastDate,   // 만료일
         int remainingPt,        // 잔여 PT (총 PT - 사용한 PT)
@@ -24,7 +24,7 @@ public record TrainerRelationDetailResponse(
             String memberContact,
             LocalDate memberBirth,
             // String memberNotes,
-            String alias,
+            // String alias,
             LocalDate ptStartDate,
             LocalDate ptLastDate,
             int remainingPt,
@@ -33,7 +33,7 @@ public record TrainerRelationDetailResponse(
             int totalMoney,
             PtFinal ptFinal) {
         return new TrainerRelationDetailResponse(
-                id, memberName, memberContact, memberBirth, //memberNotes,
-                alias, ptStartDate, ptLastDate, remainingPt, totalPt, unitPrice, totalMoney, ptFinal);
+                id, memberName, memberContact, memberBirth, //memberNotes, alias,
+                ptStartDate, ptLastDate, remainingPt, totalPt, unitPrice, totalMoney, ptFinal);
     }
 }
