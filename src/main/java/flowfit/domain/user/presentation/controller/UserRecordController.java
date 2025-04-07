@@ -26,9 +26,9 @@ public class UserRecordController {
         return ResponseEntity.status(200).body(res);
     }
 
-    // 회원이 선택한 트레이너의 세션들 조회(릴레이션 PT)
-    @GetMapping("/session/all")
-    public ResponseEntity<List<MemberCalendarResponse>> userSessionAll(@RequestParam Long id) {
+    // 회원이 선택한 트레이너의 세션들 조회(릴레이션 PT) -> 한 트레이너의 세션!! 즉 id는 relation임
+    @GetMapping("/session/all/{id}")
+    public ResponseEntity<List<MemberCalendarResponse>> userSessionAll(@PathVariable Long id) {
         List<MemberCalendarResponse> res = userRecordService.userSessionAll(id);
 
         return ResponseEntity.status(200).body(res);
@@ -36,11 +36,14 @@ public class UserRecordController {
 
 
     // 회원이 선택한 트레이너의 세션들 중 세션 조회(릴레이션 PT)
-    @GetMapping("/session")
-    public ResponseEntity<MemberCalendarResponse> userSession(@RequestParam Long id) {
+    @GetMapping("/session/{id}")
+    public ResponseEntity<MemberCalendarResponse> userSession(@PathVariable Long id) {
         MemberCalendarResponse res = userRecordService.userSession(id);
 
         return ResponseEntity.status(200).body(res);
     }
+
+
+
 
 }
