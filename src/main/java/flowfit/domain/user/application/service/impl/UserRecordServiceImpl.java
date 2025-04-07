@@ -5,11 +5,9 @@ import flowfit.domain.ptrelation.domain.repository.PtRelationRepository;
 import flowfit.domain.ptsession.domain.entity.PtSession;
 import flowfit.domain.ptsession.domain.repository.PtSessionRepository;
 import flowfit.domain.user.application.service.UserRecordService;
-import flowfit.domain.user.domain.entity.member.Member;
 import flowfit.domain.user.domain.repository.MemberRepository;
 import flowfit.domain.user.infra.exception.UserNotFoundException;
 import flowfit.domain.user.presentation.dto.res.MemberCalendarResponse;
-import flowfit.domain.user.presentation.dto.res.MemberRelationResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,26 +22,6 @@ public class UserRecordServiceImpl implements UserRecordService {
     private final PtRelationRepository ptRelationRepository;
     private final MemberRepository memberRepository;
     private final PtSessionRepository ptSessionRepository;
-
-    @Override
-    public List<MemberRelationResponse> userRelation(String userId) {
-
-        Member member = memberRepository.findById(userId).orElse(null);
-
-        if (member == null) {
-            throw new UserNotFoundException("회원 정보가 없습니다.");
-        }
-        List<PtRelation> allByMember = ptRelationRepository.findAllByMember(member);
-
-        List<MemberRelationResponse> memberRelationResponses = new ArrayList<>();
-        for (PtRelation ptRelation : allByMember) {
-            MemberRelationResponse res = MemberRelationResponse.of(ptRelation.getId(), ptRelation.getTrainer().getName(), ptRelation.getTrainer().getTrainerCode(),
-                    ptRelation.getPtStartDate(), ptRelation.getPtLastDate(), ptRelation.getPtFinal());
-
-            memberRelationResponses.add(res);
-        }
-        return memberRelationResponses;
-    }
 
     @Override
     public List<MemberCalendarResponse> userSessionAll(Long id) {
