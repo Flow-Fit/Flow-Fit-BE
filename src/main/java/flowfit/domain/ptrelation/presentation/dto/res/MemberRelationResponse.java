@@ -1,4 +1,4 @@
-package flowfit.domain.user.presentation.dto.res;
+package flowfit.domain.ptrelation.presentation.dto.res;
 
 import flowfit.domain.ptrelation.domain.entity.ptrelation.PtFinal;
 

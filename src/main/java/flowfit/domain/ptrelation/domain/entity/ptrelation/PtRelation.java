@@ -60,7 +60,6 @@ public class PtRelation {
     // 고객 별명
     private String alias;
 
-
     @OneToMany(mappedBy = "ptRelation", cascade = CascadeType.ALL)
     private List<PtSession> ptSessions = new ArrayList<>();
 
