@@ -2,7 +2,7 @@ package flowfit.domain.user.presentation.controller;
 
 import flowfit.domain.user.application.service.UserRecordService;
 import flowfit.domain.user.presentation.dto.res.MemberCalendarResponse;
-import flowfit.domain.user.presentation.dto.res.MemberRelationResponse;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,21 +19,13 @@ public class UserRecordController {
     private final UserRecordService userRecordService;
 
 
-    // 회원이 선택한 트레이너 조회(릴레이션 PT)
-    @GetMapping("/relation")
-    public ResponseEntity<List<MemberRelationResponse>> userRelation(@AuthenticationPrincipal String userId) {
-        List<MemberRelationResponse> res = userRecordService.userRelation(userId);
-        return ResponseEntity.status(200).body(res);
-    }
-
-    // 회원이 선택한 트레이너의 세션들 조회(릴레이션 PT) -> 한 트레이너의 세션!! 즉 id는 relation임
+    // 회원이 선택한 트레이너의 세션들 조회(릴레이션 PT)
     @GetMapping("/session/all/{id}")
     public ResponseEntity<List<MemberCalendarResponse>> userSessionAll(@PathVariable Long id) {
         List<MemberCalendarResponse> res = userRecordService.userSessionAll(id);
 
         return ResponseEntity.status(200).body(res);
     }
-
 
     // 회원이 선택한 트레이너의 세션들 중 세션 조회(릴레이션 PT)
     @GetMapping("/session/{id}")
@@ -42,8 +34,5 @@ public class UserRecordController {
 
         return ResponseEntity.status(200).body(res);
     }
-
-
-
 
 }

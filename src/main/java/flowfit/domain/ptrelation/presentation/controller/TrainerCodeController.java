@@ -28,8 +28,6 @@ public class TrainerCodeController {
         trainerCodeService.trainerCodePost(dto, userId);
     }
 
-
-
     @DeleteMapping
     public void trainerCodeDelete(@RequestBody TrainerCodeDeleteRequestDto dto) {
         trainerCodeService.trainerCodeDelete(dto);
