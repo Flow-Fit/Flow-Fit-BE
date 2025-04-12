@@ -1,6 +1,5 @@
 package flowfit.domain.ptrelation.domain.repository;
 
-import flowfit.domain.ptrelation.domain.entity.prepare.PreparePt;
 import flowfit.domain.ptrelation.domain.entity.ptrelation.PtRelation;
 import flowfit.domain.user.domain.entity.member.Member;
 import flowfit.domain.user.domain.entity.trainer.Trainer;
@@ -22,4 +21,5 @@ public interface PtRelationRepository extends JpaRepository<PtRelation, Long> {
     List<PtRelation> findAllByTrainer(Trainer trainer);
 
     Optional<PtRelation> findByIdAndTrainer(Long relationId, Trainer trainer);
+    List<PtRelation> findAllByTrainer_IdAndMember_NameContaining(String trainerId, String name);
 }
